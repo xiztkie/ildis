@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jdih.puncakjayakab.go.id/database/sitemap.xml

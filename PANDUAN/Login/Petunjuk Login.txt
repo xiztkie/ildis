@@ -1,0 +1,6 @@
+Petunjuk login aplikasi ILDIS_31:
+
+Buka browser ketik:
+http://localhost/ILDIS_31/backend/site/login (sesuaikan link http://localhost/ dengan alamat website JDIH)
+
+http://localhost/puncakjayakab/backend/site/login
